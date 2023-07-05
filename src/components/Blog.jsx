@@ -14,7 +14,7 @@ const Blog = ({blog}) =>  {
   const viewAll = () => (
     <>
     <p>{blog.title} {blog.author}<button onClick={() => setViewVisible(false)}>hide</button></p>
-    <p>{blog.url}</p>
+    <a href={blog.url} target="_blank" rel="noreferrer">{blog.url}</a>
     <p>likes {blog.likes} <button>like</button></p>
     <p>{blog.user.name}</p>
     </>  

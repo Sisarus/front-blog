@@ -14,7 +14,7 @@ const NewBlog = ({addNewBlog}) => {
     })
 
     setNewTitle('')
-    setNewTitle('')
+    setNewAuthor('')
     setNewUrl('')
   }
 
