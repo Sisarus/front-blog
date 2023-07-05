@@ -1,6 +1,6 @@
 import { useState, useImperativeHandle, forwardRef } from 'react'
 
-const Blog = forwardRef(({blog, newBlogLike}, ref) =>  {
+const Blog = forwardRef(({blog, newBlogLike, removeBlog, isOwner}, ref) =>  {
   const [viewVisible, setViewVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
 
@@ -20,30 +20,43 @@ const Blog = forwardRef(({blog, newBlogLike}, ref) =>  {
     }
   })
 
-  const AddBlog = (event) => {
+  const likeBlog = (event) => {
     event.preventDefault()
-
     const newLikes = likes + 1
 
-    newBlogLike({
-      id: blog.id,
-      data: {
-        user: blog.user.id,
-        likes: newLikes,
-        title: blog.title,
-        author: blog.author,
-        url: blog.url
-      }
+      newBlogLike({
+        id: blog.id,
+        data: {
+          user: blog.user.id,
+          likes: newLikes,
+          title: blog.title,
+          author: blog.author,
+          url: blog.url
+        }
+    
     })
   }
 
+  const RemoveBlog = (event) => {
+    event.preventDefault()
+
+    const confirmed = window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
+
+    if (confirmed) {
+    
+      removeBlog({id: blog.id})
+    }
+  }
 
   const viewAll = () => (
     <>
     <p>{blog.title} {blog.author}<button onClick={() => setViewVisible(false)}>hide</button></p>
     <a href={blog.url} target="_blank" rel="noreferrer">{blog.url}</a>
-    <p>likes {likes} <button onClick={AddBlog}>like</button></p>
+    <p>likes {likes} <button onClick={likeBlog}>like</button></p>
     <p>{blog.user.name}</p>
+    {isOwner && (
+      <button onClick={RemoveBlog}>Remove</button>
+    )}
     </>  
   )
 

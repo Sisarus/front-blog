@@ -39,6 +39,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
+      console.log('user.id '  + JSON.stringify(user) )
     }
   }, [])
 
@@ -75,6 +76,19 @@ const App = () => {
     }, 5000)
   }
 
+  const removeBlog = async (removeBlog) => {
+    try {
+      await blogService.remove(removeBlog)
+      const filteredBlog = blogs.filter((blog)=> blog.id !== removeBlog.id)
+      setBlogs(filteredBlog)
+    } catch (exception) {
+    setErrorMessage(exception.response.data['error'])
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
+  }
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser()
@@ -83,7 +97,6 @@ const App = () => {
   const newBlogLike = async (oldBlog) => {
     try {
       await blogService.put(oldBlog)
-      console.log('here kusinen')
       blogLikeRef.current.addLike()
     } catch (exception) {
       setErrorMessage(exception.response.data['error'])
@@ -131,7 +144,7 @@ const App = () => {
       <NewBlog addNewBlog={addBlog}/>
     </Togglable>
     {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} newBlogLike={newBlogLike} ref={blogLikeRef}/>
+      <Blog key={blog.id} blog={blog} newBlogLike={newBlogLike} removeBlog={removeBlog} isOwner={user.username === blog.user.username} ref={blogLikeRef}/>
     )}
   </div>
   )
