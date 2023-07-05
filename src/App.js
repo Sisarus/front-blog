@@ -20,9 +20,17 @@ const App = () => {
   const blogLikeRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    const fetchBlogs = async () => {
+      try {
+        const blogs = await blogService.getAll()
+        const sortedBlogs =  blogs.sort((a, b) => b.likes - a.likes)
+        setBlogs(sortedBlogs)
+      } catch (error) {
+        console.error('Error while fetching blogs', error);
+      }
+    }
+    
+    fetchBlogs()
   }, [])
 
   useEffect(() => {
