@@ -33,7 +33,6 @@ const App = () => {
     }
   }, [])
 
-  
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
