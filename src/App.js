@@ -17,6 +17,7 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
+  const blogLikeRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -71,6 +72,19 @@ const App = () => {
     setUser()
   }
 
+  const newBlogLike = async (oldBlog) => {
+    try {
+      await blogService.put(oldBlog)
+      console.log('here kusinen')
+      blogLikeRef.current.addLike()
+    } catch (exception) {
+      setErrorMessage(exception.response.data['error'])
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const loginForm = () => (
     <div>
         <h2>Log in to application</h2>
@@ -109,7 +123,7 @@ const App = () => {
       <NewBlog addNewBlog={addBlog}/>
     </Togglable>
     {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} />
+      <Blog key={blog.id} blog={blog} newBlogLike={newBlogLike} ref={blogLikeRef}/>
     )}
   </div>
   )
