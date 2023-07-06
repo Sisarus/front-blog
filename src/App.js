@@ -12,7 +12,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
 
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -26,10 +26,10 @@ const App = () => {
         const sortedBlogs =  blogs.sort((a, b) => b.likes - a.likes)
         setBlogs(sortedBlogs)
       } catch (error) {
-        console.error('Error while fetching blogs', error);
+        console.error('Error while fetching blogs', error)
       }
     }
-    
+
     fetchBlogs()
   }, [])
 
@@ -67,7 +67,7 @@ const App = () => {
   const addBlog = async (newBlog) => {
     blogFormRef.current.toggleVisibility()
     const blog = await blogService.create(newBlog)
-    
+
     setBlogs(blogs.concat(blog))
 
     setSuccessMessage(`${blog.title} by ${blog.author}`)
@@ -79,14 +79,14 @@ const App = () => {
   const removeBlog = async (removeBlog) => {
     try {
       await blogService.remove(removeBlog)
-      const filteredBlog = blogs.filter((blog)=> blog.id !== removeBlog.id)
+      const filteredBlog = blogs.filter((blog) => blog.id !== removeBlog.id)
       setBlogs(filteredBlog)
     } catch (exception) {
-    setErrorMessage(exception.response.data['error'])
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
-  }
+      setErrorMessage(exception.response.data['error'])
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
   const handleLogout = () => {
@@ -108,12 +108,12 @@ const App = () => {
 
   const loginForm = () => (
     <div>
-        <h2>Log in to application</h2>
-        <Notification message={errorMessage} type="error" />
-          <form onSubmit={handleLogin}>
+      <h2>Log in to application</h2>
+      <Notification message={errorMessage} type="error" />
+      <form onSubmit={handleLogin}>
         <div>
           username
-            <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -122,7 +122,7 @@ const App = () => {
         </div>
         <div>
           password
-            <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -130,32 +130,34 @@ const App = () => {
           />
         </div>
         <button type="submit">login</button>
-      </form> 
-      </div>
+      </form>
+    </div>
   )
 
   const blogList = () => (
     <div>
-    <h2>blogs</h2>
-    <Notification message={successMessage} type="success"/>
-    <p>{user.name} logged in <button onClick={handleLogout}>Logout</button></p>
+      <h2>blogs</h2>
+      <Notification message={successMessage} type="success"/>
+      <p>{user.name} logged in <button onClick={handleLogout}>Logout</button></p>
 
-    <Togglable buttonLabel='new blog' ref={blogFormRef}>
-      <NewBlog addNewBlog={addBlog}/>
-    </Togglable>
-    {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} newBlogLike={newBlogLike} removeBlog={removeBlog} isOwner={user.username === blog.user.username} ref={blogLikeRef}/>
-    )}
-  </div>
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
+        <NewBlog addNewBlog={addBlog}/>
+      </Togglable>
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} newBlogLike={newBlogLike} removeBlog={removeBlog} isOwner={user.username === blog.user.username} ref={blogLikeRef}/>
+      )}
+    </div>
   )
 
-    return (
-      <div>
-        {!user && loginForm()}
-        {user && blogList()}
-      </div>
-    )
-  
+  return (
+    <div>
+      {!user && loginForm()}
+      {user && blogList()}
+    </div>
+  )
+
 }
+
+App.displayName = 'App'
 
 export default App

@@ -42,5 +42,4 @@ const remove = async removeBlog => {
   return response.data
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, setToken, put, remove}
+export default { getAll, create, setToken, put, remove }
