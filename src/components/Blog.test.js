@@ -51,3 +51,32 @@ test('view Blog', async() => {
   expect(elementUser).toBeDefined()
 })
 
+test('like Blog', async() => {
+  const blog = {
+    title: 'Kuinka testataan react',
+    author: 'Kisu Miau',
+    likes: 3,
+    url: 'osoite@osoite.osoite',
+    user: {
+      name: 'Oskari'
+    }
+  }
+
+  const removeBlog = () => (<></>)
+
+  const mockHandler = jest.fn()
+
+  render(<Blog blog={blog} newBlogLike={mockHandler} removeBlog={removeBlog} isOwner={false}/>)
+
+  const user = userEvent.setup()
+  const button = screen.getByText('view')
+
+  await user.click(button)
+
+  const likeButton = screen.getByText('like')
+
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(mockHandler.mock.calls.length).toBe(2)
+})
