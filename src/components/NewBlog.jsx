@@ -59,8 +59,7 @@ const NewBlog = ({ addNewBlog }) => {
 NewBlog.displayName = 'NewBlog'
 
 NewBlog.propTypes = {
-  addNewBlog: PropTypes.object.isRequired
+  addNewBlog: PropTypes.func.isRequired
 }
-
 
 export default NewBlog
