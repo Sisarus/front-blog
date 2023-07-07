@@ -61,7 +61,9 @@ const Blog = forwardRef(({ blog, newBlogLike, removeBlog, isOwner }, ref) =>  {
   )
 
   const viewLine = () => (
-    <p>{blog.title} {blog.author}<button onClick={() => setViewVisible(true)}>view</button></p>
+    <>
+      <p>{blog.title} {blog.author}<button onClick={() => setViewVisible(true)}>view</button></p>
+    </>
   )
 
   return (
